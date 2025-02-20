@@ -1,4 +1,4 @@
-
+php
 $name, 'email' => $email];
 
    // Write the updated array back to the JSON file

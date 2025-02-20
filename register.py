@@ -47,14 +47,4 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         # إعادة توجيه المستخدم إلى صفحة التسجيل
         self.send_response(302)
-        self.send_header('Location', 'index.html')
-        self.end_headers()
-
-def run(server_class=HTTPServer, handler_class=RequestHandler):
-    server_address = ('', 8000)  # استمع على المنفذ 8000
-    httpd = server_class(server_address, handler_class)
-    print('Starting server on port 8000...')
-    httpd.serve_forever()
-
-if __name__ == "__main__":
-    run()
+        self.send_header('Location', '/')

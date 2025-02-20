@@ -1,4 +1,4 @@
-php
+<?
 $name, 'email' => $email];
 
    // Write the updated array back to the JSON file
@@ -8,4 +8,4 @@ $name, 'email' => $email];
 // Redirect back to index.html
 header('Location: index.html');
 exit();
-?>
+php?>

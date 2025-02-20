@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Register User</h1>
-    <form id="registrationForm" action="index.html" method="get">
+    <form id="registrationForm" action="index.html" method="post">
         <input type="text" name="name" placeholder="Enter your name" required />
         <input type="email" name="email" placeholder="Enter your email" required />
         <button type="submit">Register</button>
@@ -23,7 +23,7 @@
                     usersList.innerHTML = '';
                     users.forEach(user => {
                         const userItem = document.createElement('li');
-                        userItem.textContent = `Name: ${user.name}, Email: ${user.email}`;
+                        userItem.textContent = Name: ${user.name}, Email: ${user.email};
                         usersList.appendChild(userItem);
                     });
                 })

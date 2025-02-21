@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+  <title>تسجيل المستخدمين</title>
+  <script src="https://cdn.jsdelivr.net/npm/octokit@1.2.3/dist/octokit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+</head>
+<body>
+  <h1>تسجيل المستخدمين</h1>
+  <form id="user-form">
+    <input id="name" type="text" placeholder="اسمك">
+    <input id="email" type="email" placeholder="بريدك الإلكتروني">
+    <button id="save-btn" >حفظ المدخلات</button>
+  </form>
+  <script type="text/javascript">
+    const octokit = new Octokit({
+      baseUrl: 'https://api.github.com',
+      accessToken: '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' // استبدل بتوكين GitHub الخاص بك
+    });
+
+    function createFile(data) {
+      const fileContent = jsYaml.dump(data);
+      const filePath = 'data.yaml'; // استبدل باسم الملف الذي تريد إنشاؤه
+
+      octokit.repos.createOrUpdateFile({
+        owner: 'protocol-xxx', // استبدل باسم المستخدم GitHub الخاص بك
+        repo: 'followers-', // استبدل باسم المستودع GitHub الخاص بك
+        path: filePath,
+        message: 'Updated data',
+        content: fileContent
+      })
+      .then((response) => {
+        console.log('File created successfully!');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+
+    function readInput() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const data = {
+        name: name,
+        email: email
+      };
+
+      createFile(data);
+    }
+
+    document.getElementById('save-btn').addEventListener('click', readInput);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,57 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-<meta charset="utf-8" />
-  <title>تسجيل المستخدمين</title>
-  <script src="https://cdn.jsdelivr.net/npm/octokit@1.2.3/dist/octokit.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <meta charset="utf-8">
+    <title>تسجيل المستخدمين</title>
+    <script src="https://cdn.jsdelivr.net/npm/@octokit/rest@19.0.7/dist/octokit.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
 </head>
 <body>
-  <h1>تسجيل المستخدمين</h1>
-  <form id="user-form">
-    <input id="name" type="text" placeholder="اسمك">
-    <input id="email" type="email" placeholder="بريدك الإلكتروني">
-    <button id="save-btn">حفظ المدخلات</button>
-  </form>
-  <script type="text/javascript">
-    const octokit = new Octokit({
-      baseUrl: 'https://api.github.com',
-      auth: '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' // استبدل بتوكين GitHub الخاص بك
-    });
+    <h1>تسجيل المستخدمين</h1>
+    <form id="user-form">
+        <input id="name" type="text" placeholder="اسمك">
+        <input id="email" type="email" placeholder="بريدك الإلكتروني">
+        <button id="save-btn">حفظ المدخلات</button>
+    </form>
 
-    function createFile(data) {
-      const fileContent = jsYaml.dump(data);
-      const filePath = 'data.yaml'; // استبدل باسم الملف الذي تريد إنشاؤه
+    <script type="text/javascript">
+        // إنشاء كائن Octokit مع التوكين
+        const octokit = new Octokit({
+            auth: 'your_github_token_here' // استبدل بتوكين GitHub الخاص بك
+        });
 
-      octokit.repos.createOrUpdateFile({
-        owner: 'protocol-xxx', // استبدل باسم المستخدم GitHub الخاص بك
-        repo: 'followers-', // استبدل باسم المستودع GitHub الخاص بك
-        path: filePath,
-        message: 'Updated data',
-        content: btoa(fileContent) // تحويل المحتوى إلى base64
-      })
-      .then((response) => {
-        console.log('File created successfully!', response);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    }
+        async function createFile(data) {
+            alert("بدء إنشاء الملف...");
 
-    function readInput(event) {
-      event.preventDefault(); // منع إرسال النموذج وتحديث الصفحة
+            const fileContent = jsYaml.dump(data);
+            const base64Content = btoa(unescape(encodeURIComponent(fileContent))); // تحويل المحتوى إلى Base64
 
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const data = {
-        name: name,
-        email: email
-      };
+            alert("تم تحويل البيانات إلى YAML و Base64");
 
-      createFile(data);
-    }
+            try {
+                const response = await octokit.repos.createOrUpdateFileContents({
+                    owner: 'your_github_username',  // استبدل باسم المستخدم
+                    repo: 'your_github_repo',  // استبدل باسم المستودع
+                    path: 'data.yaml', 
+                    message: 'Updated data',
+                    content: base64Content,
+                    branch: 'main'  // تأكد من أن الفرع موجود
+                });
 
-    document.getElementById('save-btn').addEventListener('click', readInput);
-  </script>
+                alert("تم إنشاء الملف بنجاح!");
+                console.log(response);
+            } catch (error) {
+                alert("حدث خطأ! " + error.message);
+                console.error(error);
+            }
+        }
+
+        function readInput(event) {
+            event.preventDefault(); // منع تحديث الصفحة عند النقر على الزر
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            alert("الاسم: " + name + "\nالبريد الإلكتروني: " + email);
+
+            if (!name || !email) {
+                alert("يرجى إدخال الاسم والبريد الإلكتروني!");
+                return;
+            }
+
+            const data = { name: name, email: email };
+            createFile(data);
+        }
+
+        document.getElementById('save-btn').addEventListener('click', readInput);
+    </script>
 </body>
 </html>

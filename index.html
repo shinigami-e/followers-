@@ -17,7 +17,7 @@
     <script type="text/javascript">
         // إنشاء كائن Octokit مع التوكين
         const octokit = new Octokit({
-            auth: 'your_github_token_here' // استبدل بتوكين GitHub الخاص بك
+            auth: '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' // استبدل بتوكين GitHub الخاص بك
         });
 
         async function createFile(data) {
@@ -30,8 +30,8 @@
 
             try {
                 const response = await octokit.repos.createOrUpdateFileContents({
-                    owner: 'your_github_username',  // استبدل باسم المستخدم
-                    repo: 'your_github_repo',  // استبدل باسم المستودع
+                    owner: 'protocol-xxx',  // استبدل باسم المستخدم
+                    repo: 'followers-',  // استبدل باسم المستودع
                     path: 'data.yaml', 
                     message: 'Updated data',
                     content: base64Content,

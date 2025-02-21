@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +11,12 @@
   <form id="user-form">
     <input id="name" type="text" placeholder="اسمك">
     <input id="email" type="email" placeholder="بريدك الإلكتروني">
-    <button id="save-btn" >حفظ المدخلات</button>
+    <button id="save-btn">حفظ المدخلات</button>
   </form>
   <script type="text/javascript">
     const octokit = new Octokit({
       baseUrl: 'https://api.github.com',
-      accessToken: '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' // استبدل بتوكين GitHub الخاص بك
+      auth: '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' // استبدل بتوكين GitHub الخاص بك
     });
 
     function createFile(data) {
@@ -29,17 +28,19 @@
         repo: 'followers-', // استبدل باسم المستودع GitHub الخاص بك
         path: filePath,
         message: 'Updated data',
-        content: fileContent
+        content: btoa(fileContent) // تحويل المحتوى إلى base64
       })
       .then((response) => {
-        console.log('File created successfully!');
+        console.log('File created successfully!', response);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Error:', error);
       });
     }
 
-    function readInput() {
+    function readInput(event) {
+      event.preventDefault(); // منع إرسال النموذج وتحديث الصفحة
+
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const data = {
@@ -54,11 +55,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
